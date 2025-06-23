@@ -1,0 +1,12 @@
+./verilog_code/tb_top.v
+./verilog_code/top.v
+./verilog_code/fsm.v
+./verilog_code/ram.v
+./verilog_code/ifmd_rd_addr_gener.v
+./verilog_code/multer8x8_signed.v
+./verilog_code/accumulator.v
+./verilog_code/accu_result_reg.v
+./verilog_code/adder_21bits.v
+./verilog_code/ofmd_wr_addr_cnter.v
+./verilog_code/ofmd_rd_addr.v
+./verilog_code/wr_input_addr_cnter.v
