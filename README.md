@@ -71,11 +71,21 @@ gtkwave dump.vcd
 > Final Project for **Hardware Description Languages**
 > Department of Electronic Engineering, Chung Yuan Christian University
 > Semester: Spring 2025
-> Instructor: Prof. XXX
+> Instructor: Prof. TANG, SONG-NIEN
 
 ---
 
 ## 🧑‍💻 Contributors
 
-* Xxx (Your name)
-* Collaborators (if any)
+* tsao-ming
+
+---
+
+## ⚠️ Academic Integrity Notice
+
+This project was submitted as part of the coursework for the **Hardware Description Languages** class at Chung Yuan Christian University.
+
+All contents in this repository are original and created for educational purposes.  
+**Unauthorized copying, reuse, or submission of any part of this project for academic credit by others is strictly prohibited.**
+
+Violators may be reported for academic misconduct.
