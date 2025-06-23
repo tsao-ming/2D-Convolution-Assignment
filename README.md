@@ -50,7 +50,6 @@ We implemented a **kernel-size configurable design**, controlled by an `is_5x5` 
 
 * When `is_5x5 = 0`, the processor performs **3×3 convolution**
 * When `is_5x5 = 1`, it performs **5×5 convolution**
-* The data memory access and weight fetch logic automatically adjust according to the kernel size
 
 This flexible design avoids redundant hardware, enabling runtime configurability without modifying the code.
 
