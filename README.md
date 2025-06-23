@@ -63,8 +63,6 @@ By extending **Architecture 3**, our implementation supports both:
 * **Multi-channel convolution (layer-level processing)**
 * **Runtime kernel-size switching**
 
-These features make our design more flexible and closer to real-world CNN applications.
-
 ---
 
 ## 📂 File Structure
