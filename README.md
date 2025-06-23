@@ -39,7 +39,7 @@ Our processor supports **multi-channel input and multi-output convolution**, all
 * Each OFM is computed by summing the results from both input feature maps with their corresponding kernels:
 
   $$
-  OFM_1 = IFMD_1 \ast KW_{1,1} + IFMD_2 \ast KW_{2,1}
+  OFM_1 = IFMD_1 \ast KW_{1,1} + IFMD_2 \ast KW_{2,1}  \n
   OFM_2 = IFMD_1 \ast KW_{1,2} + IFMD_2 \ast KW_{2,2}
   $$
 
