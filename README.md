@@ -31,15 +31,15 @@ To enhance functionality, we further extended the design to support the followin
 
 ### ✅ a. Multi-Input Feature Map Convolution ("One Layer")
 
-Our processor supports **multiple input feature maps**, allowing it to compute the output of a full convolutional layer.
+Our processor supports **multi-channel input convolution**, allowing it to simulate the behavior of a full convolutional layer.
 
-* The TM sequentially writes **N input feature maps** (e.g., 2 or 4) into the data memory.
-* Each feature map is convolved with its corresponding kernel weight matrix.
-* The results are accumulated internally to produce the final output feature map (OFM).
-* This matches typical CNN behavior:
+* In our implementation, the TM writes **2 input feature maps (IFMDs)** into memory.
+* Each IFMD is paired with **2 different kernel weight matrices (KWs)**, for a total of **4 sets of KW**.
+* All 4 convolution results are **accumulated** internally to generate a single output feature map (OFM).
+* This simulates a layer where multiple filters are applied across multiple input channels:
 
   $$
-  OFM = \sum_{i=1}^{N} (IFMD_i \ast KW_i)
+  OFM = \sum_{i=1}^{2} \sum_{j=1}^{2} (IFMD_i \ast KW_{i,j})
   $$
 
 ---
