@@ -47,13 +47,13 @@ You can simulate the design using **ModelSim** or **Icarus Verilog**:
 
 ```bash
 # Compile
-iverilog -o sim_out src/*.v tb/tb_top.v
+iverilog -f .\filelist.txt
 
 # Run simulation
-vvp sim_out
+vvp a.out
 
 # View waveform
-gtkwave dump.vcd
+gtkwave .\bench_wave.vcd
 ````
 
 ---
