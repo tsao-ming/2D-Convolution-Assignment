@@ -63,26 +63,6 @@ By extending **Architecture 3**, our implementation supports both:
 
 ---
 
-## 📂 File Structure
-
-```
-
-.
-├── src/                      # Verilog source files
-│   ├── conv\_core.v
-│   ├── line\_buffer.v
-│   ├── controller.v
-│   └── top.v
-├── tb/                       # Testbench and simulation scripts
-│   └── tb\_top.v
-├── doc/                      # Fixed-point calculation and SQNR report
-│   └── conv\_calculation.xlsx / hand\_calc.png
-└── README.md
-
-````
-
----
-
 ## ▶️ How to Simulate
 
 You can simulate the design using **ModelSim** or **Icarus Verilog**:
