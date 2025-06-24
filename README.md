@@ -100,12 +100,6 @@ gtkwave .\bench_wave.vcd
 
 ---
 
-## 🧑‍💻 Contributors
-
-* tsao-ming
-
----
-
 ## ⚠️ Academic Integrity Notice
 
 This project was submitted as part of the coursework for the **Hardware Description Languages** class at Chung Yuan Christian University.
