@@ -4,14 +4,14 @@ This repository contains the Verilog implementation and fixed-point simulation r
 
 ---
 
-## 🧠 Project Overview
+## Project Overview
 
 We designed and implemented a two-dimensional convolution processor that performs kernel-based filtering on input image data.  
 The processor supports different kernel sizes and can be configured to operate in various hardware architectures (Architecture 1, 2, and 3).
 
 ---
 
-## 📌 Features
+## Features
 
 - Supports **3×3** and **5×5** kernel convolution
 - Fixed-point data processing: **8-bit input → 16-bit output**
@@ -21,7 +21,7 @@ The processor supports different kernel sizes and can be configured to operate i
 
 ---
 
-## 🏗️ Architecture 3 — Extended Design Description
+## Architecture 3 — Extended Design Description
 
 In this project, we adopted **Architecture 3** to implement an extendable 2D convolution processor. This architecture allows both the input feature maps (IFMD) and kernel weights (KW) to be dynamically written into internal memory by the **Testbench (TM)**, supporting flexible data loading and reuse.
 
@@ -29,7 +29,7 @@ To enhance functionality, we further extended the design to support the followin
 
 ---
 
-### ✅ a. Multi-Input Feature Map Convolution ("One Layer")
+### a. Multi-Input Feature Map Convolution ("One Layer")
 
 Our processor supports **multi-channel input and multi-output convolution**, allowing it to simulate the behavior of a complete convolutional layer.
 
@@ -48,7 +48,7 @@ Our processor supports **multi-channel input and multi-output convolution**, all
 
 ---
 
-### ✅ b. Configurable Kernel Size (3×3 or 5×5)
+### b. Configurable Kernel Size (3×3 or 5×5)
 
 We implemented a **kernel-size configurable design**, controlled by an `is_5x5` input signal:
 
@@ -57,7 +57,7 @@ We implemented a **kernel-size configurable design**, controlled by an `is_5x5` 
 
 ---
 
-### 🧠 Summary
+### Summary
 
 By extending **Architecture 3**, our implementation supports both:
 
@@ -66,7 +66,7 @@ By extending **Architecture 3**, our implementation supports both:
 
 ---
 
-## ▶️ How to Simulate
+## How to Simulate
 
 You can simulate the design using **ModelSim** or **Icarus Verilog**:
 
@@ -83,7 +83,7 @@ gtkwave .\bench_wave.vcd
 
 ---
 
-## 🧪 Fixed-point Validation
+## Fixed-point Validation
 
 * Floating-point results were calculated using Python / C / Excel
 * Fixed-point outputs were derived and validated
@@ -91,7 +91,7 @@ gtkwave .\bench_wave.vcd
 
 ---
 
-## 📘 Course Info
+## Course Info
 
 > Final Project for **Hardware Description Languages**
 > Department of Electronic Engineering, Chung Yuan Christian University
@@ -100,7 +100,7 @@ gtkwave .\bench_wave.vcd
 
 ---
 
-## ⚠️ Academic Integrity Notice
+## Academic Integrity Notice
 
 This project was submitted as part of the coursework for the **Hardware Description Languages** class at Chung Yuan Christian University.
 
