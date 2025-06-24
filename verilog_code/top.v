@@ -1,15 +1,34 @@
-module top (
-    input clk,
-    input rst,
-    input [7:0] din,
-    input in_st_ifmd,
-    input in_st_kw,
-    input kw_is_5_5,
+module top #(
+    parameter IFMD_H            = 8,         // Height of IFMD
+    parameter IFMD_W            = 8,         // Width of IFMD
+    parameter KW_H_3            = 3,         // Height of 3x3 kernel
+    parameter KW_W_3            = 3,         // Width of 3x3 kernel
+    parameter KW_H_5            = 5,        
+    parameter KW_W_5            = 5,
+    parameter INPUT_DATA_WIDTH  = 8,         // Data width for IFMD and KW
+    parameter OUTPUT_DATA_WIDTH = 16         // Data width for OFMD
+)(
+    input                           clk,
+    input                           rst,
+    input   [INPUT_DATA_WIDTH-1:0]  din,
+    input                           in_st_ifmd,
+    input                           in_st_kw,
+    input                           kw_is_5_5,
 
-    output out_st,
-    output [15:0] dout_ofmd1,
-    output [15:0] dout_ofmd2
+    output                          out_st,
+    output  [OUTPUT_DATA_WIDTH-1:0] dout_ofmd1,
+    output  [OUTPUT_DATA_WIDTH-1:0] dout_ofmd2
 );
+
+localparam IFMD_ADDR_DEPTH      = IFMD_H * IFMD_W;       // 8x8 IFMD has 64 words
+localparam WORDS_3X3_ADDR_DEPTH = KW_H_3 * KW_W_3;
+localparam WORDS_5X5_ADDR_DEPTH = KW_H_5 * KW_W_5;
+localparam OFMD_H_3 = IFMD_H - KW_H_3 + 1;              // Height of OFMD for 3x3 kernel
+localparam OFMD_W_3 = IFMD_W - KW_W_3 + 1;
+localparam OFMD_H_5 = IFMD_H - KW_H_5 + 1;
+localparam OFMD_W_5 = IFMD_W - KW_W_5 + 1;
+localparam OFMD_ADDR_DEPTH_3 = OFMD_H_3 * OFMD_W_3;    // 6x6 OFMD has 36 words
+localparam OFMD_ADDR_DEPTH_5 = OFMD_H_5 * OFMD_W_5;    // 4x4 OFMD has 16 words
 
 wire [7:0] ifmd1_dout, ifmd2_dout;
 wire ifmd_wr_done;
@@ -48,7 +67,6 @@ fsm fsm (
     .clk(clk),
     .rst(rst),
     .in_st_ifmd(in_st_ifmd),
-    .din(din),
     .ifmd_wr_done(ifmd_wr_done),
     .in_st_kw(in_st_kw),
     .kw_is_5_5(kw_is_5_5),
@@ -83,10 +101,10 @@ fsm fsm (
 );
 
 wr_input_addr_cnter #(
-    .WORDS_3X3_ADDR_DEPTH(9),  // 3x3 kernel has 9 words
-    .WORDS_5X5_ADDR_DEPTH(25), // 5x5 kernel has 25 words
-    .IFMD_ADDR_DEPTH(64),      // IFMD has 64 words
-    .COUNT_WIDTH(6)            // Count width for IFMD and KW
+    .WORDS_3X3_ADDR_DEPTH(WORDS_3X3_ADDR_DEPTH),  // 3x3 kernel has 9 words
+    .WORDS_5X5_ADDR_DEPTH(WORDS_5X5_ADDR_DEPTH), // 5x5 kernel has 25 words
+    .IFMD_ADDR_DEPTH(IFMD_ADDR_DEPTH),          // IFMD has 64 words
+    .COUNT_WIDTH(6)                             // Count width for IFMD and KW
 ) wr_input_addr_cnter (
     .clk(clk),
     .rst(rst),
@@ -103,8 +121,8 @@ wr_input_addr_cnter #(
 
 // ------------IFMD RAMs------------
     ram #(
-        .DATA_WIDTH(8),
-        .WORDS(64),
+        .DATA_WIDTH(INPUT_DATA_WIDTH),
+        .WORDS(IFMD_ADDR_DEPTH), // 64 words for 8x8 IFMD
         .ADDR_WIDTH(6)
     ) ram_ifmd1 (
         .clk(clk),
@@ -116,8 +134,8 @@ wr_input_addr_cnter #(
         .dout(ifmd1_dout)
     );
     ram #(
-        .DATA_WIDTH(8),
-        .WORDS(64),
+        .DATA_WIDTH(INPUT_DATA_WIDTH),
+        .WORDS(IFMD_ADDR_DEPTH),
         .ADDR_WIDTH(6)
     ) ram_ifmd2 (
         .clk(clk),
@@ -132,8 +150,8 @@ wr_input_addr_cnter #(
 
 // -------------KW RAMs-------------
     ram #(
-        .DATA_WIDTH(8),
-        .WORDS(25),
+        .DATA_WIDTH(INPUT_DATA_WIDTH),
+        .WORDS(WORDS_5X5_ADDR_DEPTH), // 25 words for 5x5 kernel
         .ADDR_WIDTH(5)      // 2^5
     ) ram_kw1 (
         .clk(clk),
@@ -145,8 +163,8 @@ wr_input_addr_cnter #(
         .dout(kw1_dout)
     );
     ram #(
-        .DATA_WIDTH(8),
-        .WORDS(25),
+        .DATA_WIDTH(INPUT_DATA_WIDTH),
+        .WORDS(WORDS_5X5_ADDR_DEPTH),
         .ADDR_WIDTH(5)      // 2^5
     ) ram_kw2 (
         .clk(clk),
@@ -158,8 +176,8 @@ wr_input_addr_cnter #(
         .dout(kw2_dout)
     );
     ram #(
-        .DATA_WIDTH(8),
-        .WORDS(25),
+        .DATA_WIDTH(INPUT_DATA_WIDTH),
+        .WORDS(WORDS_5X5_ADDR_DEPTH),
         .ADDR_WIDTH(5)      // 2^5
     ) ram_kw3 (
         .clk(clk),
@@ -171,8 +189,8 @@ wr_input_addr_cnter #(
         .dout(kw3_dout)
     );
     ram #(
-        .DATA_WIDTH(8),
-        .WORDS(25),
+        .DATA_WIDTH(INPUT_DATA_WIDTH),
+        .WORDS(WORDS_5X5_ADDR_DEPTH),
         .ADDR_WIDTH(5)      // 2^5
     ) ram_kw4 (
         .clk(clk),
@@ -186,12 +204,12 @@ wr_input_addr_cnter #(
 // ---------------------------------
 
 ifmd_rd_addr_gener #(
-    .IFMD_H(8),         // Height of IFMD
-    .IFMD_W(8),         // Width of IFMD
-    .KW_H_3(3),         // Height of 3x3 kernel
-    .KW_W_3(3),         // Width of 3x3 kernel
-    .KW_H_5(5),         // Height of 5x5 kernel
-    .KW_W_5(5)          // Width of 5x5 kernel
+    .IFMD_H(IFMD_H),         // Height of IFMD
+    .IFMD_W(IFMD_W),         // Width of IFMD
+    .KW_H_3(KW_H_3),         // Height of 3x3 kernel
+    .KW_W_3(KW_W_3),         // Width of 3x3 kernel
+    .KW_H_5(KW_H_5),         // Height of 5x5 kernel
+    .KW_W_5(KW_W_5)          // Width of 5x5 kernel
 ) ifmd_rd_addr_gener (
     .clk(clk),
     .rst(rst),
@@ -319,8 +337,8 @@ ofmd_wr_addr_cnter #(
 
 // ------------OFMD RAMs------------
     ram #(
-        .DATA_WIDTH(16),
-        .WORDS(36),
+        .DATA_WIDTH(OUTPUT_DATA_WIDTH),
+        .WORDS(OFMD_ADDR_DEPTH_3), // 36 words for 6x6 OFMD
         .ADDR_WIDTH(6)
     ) ram_ofmd1 (
         .clk(clk),
@@ -332,8 +350,8 @@ ofmd_wr_addr_cnter #(
         .dout(dout_ofmd1)
     );
     ram #(
-        .DATA_WIDTH(16),
-        .WORDS(36),
+        .DATA_WIDTH(OUTPUT_DATA_WIDTH),
+        .WORDS(OFMD_ADDR_DEPTH_3),  // 36 words for 6x6 OFMD
         .ADDR_WIDTH(6)
     ) ram_ofmd2 (
         .clk(clk),
@@ -349,8 +367,8 @@ ofmd_wr_addr_cnter #(
 // OFMD read address generator
 ofmd_rd_addr #(
     .WIDTH(6),         // Width of the address counter
-    .OFMD1_SIZE(36),  // Size for 6x6 OFMD
-    .OFMD2_SIZE(16)   // Size for 4x4 OFMD
+    .OFMD1_SIZE(OFMD_ADDR_DEPTH_3),  // Size for 6x6 OFMD
+    .OFMD2_SIZE(OFMD_ADDR_DEPTH_5)   // Size for 4x4 OFMD
 ) ofmd_rd_addr_cnter (
     .clk(clk),
     .rst(rst),

@@ -41,14 +41,14 @@ module ifmd_rd_addr_gener #(
 
 
     wire signed [5:0] pulse_a_offset;
-    assign pulse_a_offset = is_5x5 ? (IFMD_W - KW_W_5 + 1) : (IFMD_W - KW_W_3 + 1); // +6 for 5x5, +4 for 3x3
+    assign pulse_a_offset = is_5x5 ? (IFMD_W - KW_W_5 + 1) : (IFMD_W - KW_W_3 + 1);             // +4 for 5x5, +6 for 3x3
 
     wire signed [5:0] pulse_b_offset;
     assign pulse_b_offset = is_5x5 ?    -(KW_H_5 - 1) * IFMD_W - (KW_W_5 - 1) + 1 : 
-                                        -(KW_H_3 - 1) * IFMD_W - (KW_W_3 - 1) + 1; // -17 for 5x5, -15 for 3x3
+                                        -(KW_H_3 - 1) * IFMD_W - (KW_W_3 - 1) + 1;              // -35 for 5x5, -17 for 3x3
 
     wire signed [5:0] pulse_c_offset;
-    assign pulse_c_offset = is_5x5 ? -(KW_H_5 - 1) * IFMD_W + 1 : -(KW_H_3 - 1) * IFMD_W + 1; // -15 for 5x5, -12 for 3x3
+    assign pulse_c_offset = is_5x5 ? -(KW_H_5 - 1) * IFMD_W + 1 : -(KW_H_3 - 1) * IFMD_W + 1;   // -31 for 5x5, -15 for 3x3
 
 
     always @(posedge clk) begin
@@ -114,11 +114,11 @@ module ifmd_rd_addr_gener #(
         else if (ifmd_rd_done) // 324
             ifmd_rd_addr <= 0;
         else if (pulse_c) // 54
-            ifmd_rd_addr <= ifmd_rd_addr + pulse_c_offset;       // - 15
+            ifmd_rd_addr <= ifmd_rd_addr + pulse_c_offset;      // -31 for 5x5, -15 for 3x3
         else if (pulse_b) // 9
-            ifmd_rd_addr <= ifmd_rd_addr + pulse_b_offset;   // - 17
+            ifmd_rd_addr <= ifmd_rd_addr + pulse_b_offset;      // -35 for 5x5, -17 for 3x3
         else if (pulse_a) // 3
-            ifmd_rd_addr <= ifmd_rd_addr + pulse_a_offset;     // + 6
+            ifmd_rd_addr <= ifmd_rd_addr + pulse_a_offset;      // +4 for 5x5, +6 for 3x3
         else if (enable)
             ifmd_rd_addr <= ifmd_rd_addr + 1'b1;
     end

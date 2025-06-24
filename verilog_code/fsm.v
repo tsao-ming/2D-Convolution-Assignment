@@ -2,7 +2,6 @@ module fsm (
     input clk,
     input rst,
     input in_st_ifmd,
-    input [7:0] din,
     input ifmd_wr_done,
     input in_st_kw,
     input kw_is_5_5,
@@ -200,7 +199,8 @@ module fsm (
 
     assign ofmd_wr_addr_en = delay2_calc_ing ;
     assign ofmd_rd_en = (state == S_READ_RESULT);
-    assign ofmd_ram_en = (state == S_READ_RESULT) || (state == S_CALC) || (state == S_POST_CALC_1) ||(state == S_POST_CALC_2) || (state == S_POST_CALC_3);
+    assign ofmd_ram_en      = delay3_calc_ing || (state == S_POST_CALC_1) || (state == S_POST_CALC_2) || 
+                            (state == S_POST_CALC_3) || (state == S_READ_RESULT);
 
     always @(posedge clk) begin
         if (!rst)

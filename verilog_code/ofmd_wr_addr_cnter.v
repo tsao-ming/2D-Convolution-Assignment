@@ -8,7 +8,7 @@ module ofmd_wr_addr_cnter #(
 
     output reg [ADDR_WIDTH-1:0] addr_cnt // 0~15
 );
-    reg [5:0] addr_cnt_prev;
+    reg [ADDR_WIDTH-1:0] addr_cnt_prev;
     always @(posedge clk) begin
         if (!rst) begin
             addr_cnt_prev <= 0;

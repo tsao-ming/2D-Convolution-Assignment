@@ -1,15 +1,17 @@
-module accu_result_reg (
+module accu_result_reg #(
+    parameter DATA_WIDTH = 20
+)(
     input  wire         clk, 
     input  wire         rst, 
-    input  wire [19:0]  acc_out,    // 輸入資料
+    input  wire [DATA_WIDTH-1:0]  acc_out,    // 輸入資料
     input               load_new_value,
 
-    output reg  [19:0]  data
+    output reg  [DATA_WIDTH-1:0]  data
 );
-    reg [19:0] accu_out; // 累加結果
+    reg [DATA_WIDTH-1:0] accu_out; // 累加結果
     always @(posedge clk) begin
         if (!rst) begin
-            data <= 20'd0;
+            data <= 0;
         end
         else if (load_new_value) begin
             data <= acc_out;
